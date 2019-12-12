@@ -15,7 +15,7 @@ let tmpCanvas = canvas.cloneNode(true),
 let coolmap;
 
 const img = new Image()
-img.src = './img/coolmap2.png'
+img.src = './img/coolmap.png'
 img.onload = _ => {
 	
 	tmpC.drawImage(img,0,0,w,h)
@@ -30,7 +30,7 @@ img.onload = _ => {
 		}
 	}
 	let text = getMessage() || "Hello World!"
-	let fontSize = w / text.length;
+	let fontSize = w / (text.length > 1 ? text.length : 2 );
 	tmpC.font = fontSize+"px Arial";
 	tmpC.textAlign = "center"
 	tmpC.fillRect(0,0,w,h)
