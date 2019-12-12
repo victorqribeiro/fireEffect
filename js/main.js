@@ -16,12 +16,8 @@ let coolmap;
 
 const img = new Image()
 img.src = './img/coolmap2.png'
-img.crossOrigin = "Anonymous"
 img.onload = _ => {
 	
-	//let pat = tmpC.createPattern(img, "repeat");
-	//tmpC.fillStyle = pat
-	//tmpC.fillRect(0,0,w,h)
 	tmpC.drawImage(img,0,0,w,h)
 	let _coolmap = tmpC.getImageData(0,0,w,h);
 	coolmap = Array(w).fill().map(_=>Array(h).fill(0));
@@ -33,23 +29,21 @@ img.onload = _ => {
 											_coolmap.data[index+2] * 0.0722
 		}
 	}
-	tmpC.font = "60px Arial";
+	let text = getMessage() || "Hello World!"
+	let fontSize = w / text.length;
+	tmpC.font = fontSize+"px Arial";
 	tmpC.textAlign = "center"
 	tmpC.fillRect(0,0,w,h)
 	tmpC.fillStyle = "white"
-	tmpC.fillText("Hello World", w/2, h/2);
+	tmpC.fillText(text, w/2, h/2 + fontSize/3);
 	animation()
 }
 
-
-
-
-
-
-
-let temp;
-
 scroll = 0;
+
+function getMessage() {
+	return (new URL(document.location)).searchParams.get('message')
+}
 
 function animation(){
 	
@@ -63,8 +57,6 @@ function animation(){
 			
 			buffer2[i][j-1] = Math.max(((n1+n2+n3+n4)/4)-(coolmap[i][(j+scroll)%h]*0.1),0)
 			
-			
-			
 		}
 	}
 	
@@ -75,23 +67,23 @@ function animation(){
 	for(let i = 0; i < buffer1.length; i++){
 		for(let j = 0; j < buffer1[0].length; j++){
 			let index = (j * buffer1.length + i) * 4
-			_img.data[index] = buffer2[i][j]
-			_img.data[index+1] = buffer2[i][j]
-			_img.data[index+2] = buffer2[i][j]
+			_img.data[index] = buffer2[i][j] ** 2 * 0.1
+			_img.data[index+1] = buffer2[i][j] * 0.8
+			_img.data[index+2] = buffer2[i][j] ** 0.5 * 0.3
 			_img.data[index+3] = 255
 		}
 	}
 	
 	c.putImageData(_img,0,0)
 	
-	temp = buffer2;
+	let temp = buffer2;
 	buffer2 = buffer1;
 	buffer1 = temp;
 	requestAnimationFrame(animation);
 	ripple()
 }
 
-function ripple(e){
+function ripple(){
 	let img = tmpC.getImageData(0,0,w,h);
 	
 	for(let i = 0; i < buffer1.length; i++){
@@ -102,12 +94,8 @@ function ripple(e){
 	}
 }
 
-document.addEventListener("click", ripple  );
 
-//document.addEventListener("mousemove", ripple  );
-
-/*
 window.addEventListener("resize",function(){
 	location.reload();
 });
-*/
+
