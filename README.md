@@ -1,4 +1,4 @@
-# Ripple Effect
+# Fire Effect
 
 A JavaScript fire effect implemented using canvas
 
