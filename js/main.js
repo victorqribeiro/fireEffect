@@ -1,10 +1,13 @@
 const s = 1 /* size - the bigger the faster (lower quality) */
+const ignateFactor = 18
 const canvas = document.getElementById("canvas")
 canvas.width = w = Math.floor(innerWidth/s)
 canvas.height = h = Math.floor(innerHeight/s)
 canvas.style.width = '100%'
 canvas.style.height = '100%'
 const c = canvas.getContext("2d")
+const scale = window.devicePixelRatio
+const offset = w * 0.01
 
 let buffer1 = Array(w).fill().map(_=>Array(h).fill(0))
 let buffer2 = Array(w).fill().map(_=>Array(h).fill(0))
@@ -86,7 +89,7 @@ const animation = () => {
 
 const ignite = () => {
     for(let i = 0; i < d.length; i+=2)
-        buffer1[d[i]][d[i+1]+Math.floor(Math.random()*10-20)] += 12
+        buffer1[d[i]+Math.floor(Math.random()*offset-offset*2)][d[i+1]] += ignateFactor * scale
 }
 
 window.addEventListener("resize", ()=>{ location.reload() })
