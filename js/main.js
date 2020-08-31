@@ -1,5 +1,4 @@
 const s = 1 /* size - the bigger the faster (lower quality) */
-const ignateFactor = 18
 const canvas = document.getElementById("canvas")
 canvas.width = w = Math.floor(innerWidth/s)
 canvas.height = h = Math.floor(innerHeight/s)
@@ -14,12 +13,13 @@ let buffer2 = Array(w).fill().map(_=>Array(h).fill(0))
 
 let tmpCanvas = canvas.cloneNode(true),
     tmpC = tmpCanvas.getContext('2d'),
-    coolmap, textData, scroll = 0, d = []
+    coolmap, textData, scroll = 0, d = [],
+    text, strength
 
 const img = new Image()
 img.src = './img/coolmap.png'
 img.onload = _ => {
-	
+	getParams()
 	tmpC.drawImage(img,0,0,w,h)
 	let _coolmap = tmpC.getImageData(0,0,w,h);
 	coolmap = Array(w).fill().map(_=>Array(h).fill(0));
@@ -31,7 +31,6 @@ img.onload = _ => {
 						    _coolmap.data[index+2] * 0.0722
 		}
 	}
-	let text = getMessage() || "Hello World!"
 	let fontSize = w / (text.length > 1 ? text.length : 2 )
 	tmpC.font = fontSize+"px Verdana";
 	tmpC.textAlign = "center"
@@ -48,8 +47,11 @@ img.onload = _ => {
 	animation()
 }
 
-const getMessage = () => {
-	return (new URL(document.location)).searchParams.get('message')
+const getParams = () => {
+    const url = new URL(document.location)
+	text = url.searchParams.get('message') || "Hello World!"
+	const num = url.searchParams.get('strength')
+	strength = isNaN(num) || !num ? 18 : num
 }
 
 const animation = () => {
@@ -89,7 +91,7 @@ const animation = () => {
 
 const ignite = () => {
     for(let i = 0; i < d.length; i+=2)
-        buffer1[d[i]+Math.floor(Math.random()*offset-offset*2)][d[i+1]] += ignateFactor * scale
+        buffer1[d[i]+Math.floor(Math.random()*offset-offset*2)][d[i+1]] += strength * scale
 }
 
 window.addEventListener("resize", ()=>{ location.reload() })

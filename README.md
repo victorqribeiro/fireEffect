@@ -18,6 +18,10 @@ Send the link to someone passing a message parameter:
 https://victorribeiro.com/fireEffect?message=Hi my friend
 ```
 
+You can also pass a strength parameter to control the fire effect:
+```html
+https://victorribeiro.com/fireEffect?message=Hi my friend&strength=20
+```
 
 ## Algorithm
 
